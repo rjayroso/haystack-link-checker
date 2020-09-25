@@ -1,5 +1,6 @@
 # Haystack CLI Link Checker
-Haystack is a command line tool that checks for broken links.
+Do you have valid and broken links that need to be fixed? Haystack will find those needles and report them back to you!
+---
 ![Haystack Running](https://github.com/rjayroso/haystack-link-checker/blob/master/resources/haystack-run.gif)
 ## Features 
 - Version and help section
