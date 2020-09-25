@@ -7,7 +7,7 @@ Haystack is a command line tool that checks for broken links.
 ## Getting Started 
 Below are instructions for getting Haystack running on your machine. Let's find those needles!
 ### Prerequisites
-You will need [Git](https://git-scm.com/) and [Python 3] to pull from this repository and run Haystack.
+You will need [Git](https://git-scm.com/) and [Python 3](https://www.python.org/downloads/) to pull from this repository and run Haystack.
 ### Installation Using Git
 First, go to the folder or workspace that you want to clone the repository into:
 ```bash
