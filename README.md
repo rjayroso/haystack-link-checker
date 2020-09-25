@@ -36,7 +36,7 @@ pip install requests
 ```
 ### Running Haystack
 ```bash
-# Once you have successfully installed Python and the dependencies, type haystack.py to see help
+# Once you have successfully installed Python and the dependencies, type haystack.py to see help section
 python haystack.py
 
 # To see the version, use the argument -v or --version
