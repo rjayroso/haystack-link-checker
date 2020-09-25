@@ -2,7 +2,7 @@
 # Author: Royce Ayroso-Ong
 # Version: 0.1
 # Licence: MIT Licence
-# Description: Haystack checks through a file for broken links
+# Description: Haystack checks through a file for broken links and reports the status code
 
 
 import sys                      # command line arguments
