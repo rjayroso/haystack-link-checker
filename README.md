@@ -27,7 +27,7 @@ cd haystack-link-checker
 git remote remove origin 
 ```
 ### Installing Dependencies
- Be sure to upgrade to the latest version of Python as  pip is already installed if you are using Python 2 >=2.7.9 or Python 3 >=3.4.
+ Be sure to upgrade to the latest version of Python because pip is already installed if you are using Python 2 >=2.7.9 or Python 3 >=3.4.
 ```bash
 # Install dependencies using pip 
 pip install termcolor
