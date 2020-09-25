@@ -1,6 +1,7 @@
 # Haystack CLI Link Checker
-Haystack is a command line tool that checks for broken links.
-## Features 
+Do you have valid and broken links that need to be fixed? Haystack will find those needles and report them back to you!
+## Features
+![Haystack Running](https://github.com/rjayroso/haystack-link-checker/blob/master/resources/haystack-run.gif)
 - Version and help section
 - Coloured terminal text
 - Exception handling for unkown links
@@ -35,7 +36,7 @@ pip install requests
 ```
 ### Running Haystack
 ```bash
-# Once you have successfully installed Python and the dependencies, type haystack.py to see the help section
+# Once you have successfully installed Python and the dependencies, type haystack.py to see help section
 python haystack.py
 
 # To see the version, use the argument -v or --version
