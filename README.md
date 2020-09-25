@@ -1,12 +1,11 @@
 # Haystack CLI Link Checker
 Do you have valid and broken links that need to be fixed? Haystack will find those needles and report them back to you!
-## Features 
+## Features
+![Haystack Running](https://github.com/rjayroso/haystack-link-checker/blob/master/resources/haystack-run.gif)
 - Version and help section
 - Coloured terminal text
 - Exception handling for unkown links
 - Support for UNIX and Windows style commands
----
-![Haystack Running](https://github.com/rjayroso/haystack-link-checker/blob/master/resources/haystack-run.gif)
 ## Getting Started 
 Below are instructions for getting Haystack running on your machine. Let's find those needles!
 ### Prerequisites
