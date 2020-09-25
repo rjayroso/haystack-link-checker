@@ -1,6 +1,7 @@
 # Haystack CLI Link Checker
 Haystack is a command line tool that checks for broken links.
 ## Features 
+- Version and help section
 - Coloured terminal text
 - Exception handling for unkown links
 - Support for UNIX and Windows style commands
@@ -43,9 +44,9 @@ python haystack.py -v
 # To run haystack on your own HTML file
 python haystack.py <filename>
 ```
-## Author :book:
+## Author
 - [Royce Ayroso-Ong](https://github.com/rjayroso)
-## License :page_facing_up:
+## License
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/rjayroso/react-vehicle-database-manager/blob/master/LICENSE) file for details.
-## Acknowledgments :bulb:
+## Acknowledgments
 I would like to thank my colleagues for reviewing my code and issuing suggestions for improvements.
