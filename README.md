@@ -6,6 +6,8 @@ Do you have valid and broken links that need to be fixed? Haystack will find tho
 - Coloured terminal text
 - Exception handling for unkown links
 - Support for UNIX and Windows style commands
+- Support for parallelization, using multiple threads pool
+
 ## Getting Started 
 Below are instructions for getting Haystack running on your machine. Let's find those needles!
 ### Prerequisites
@@ -55,3 +57,14 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
 For those wanting to contribute, please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details.
 ## Acknowledgments
 I would like to thank my colleagues for reviewing my code and issuing suggestions for improvements.
+
+## Issue fixed
+Having command line print issue
+<p align="center">
+  <img src="./resources/issue-5 found.png" alt="result" width="738">
+</p>
+
+Resolving this issue
+<p align="center">
+  <img src="./resources/issue-5 fixed.png" alt="result" width="738">
+</p>
