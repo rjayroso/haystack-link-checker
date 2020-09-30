@@ -10,6 +10,7 @@ import requests                 # url validating
 import codecs                   # file handling
 import re                       # regex for urls
 from termcolor import colored   # colored terminal text
+from multiprocessing.dummy import Pool # Add Feature: add support for parallelization, using multiple CPU cores so your program can do more than one thing at a time
 
 
 # count variables to record the amount of valid/bad/unknown links
@@ -75,14 +76,13 @@ if __name__ == '__main__':
             print("Error opening file: {0}".format(err))
         else:  # success opening file
             urls = find_urls(file.read())
+            pool = Pool(10)              # Using 5 Thread pool
+            pool.map(check_url, urls)    # Return an iterator that applies function to every item of iterable, yielding the results
+            pool.close()
+            pool.join()
 
-            for url in urls:
-                check_url(url)
-
-            print("Haystack has finished processing the file.\n",
-                  colored("# of VALID links: {} | ".format(valid_urls_count), 'green'),
-                  colored("# of UNKNOWN links: {} | ".format(unknown_urls_count), 'yellow'),
-                  colored("# of BAD links: {}".format(bad_urls_count), 'red'))
+            # Using '+' operator to connect with each sentence to print
+            print("Haystack has finished processing the file.\n" + colored("# of VALID links: {} | ".format(valid_urls_count), 'green') + colored("# of UNKNOWN links: {} | ".format(unknown_urls_count), 'yellow') + colored("# of BAD links: {}".format(bad_urls_count), 'red'))
 
     else:
         print("Error: unknown commands")
