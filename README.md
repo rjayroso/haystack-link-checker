@@ -52,7 +52,7 @@ python haystack.py <filename>
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/rjayroso/react-vehicle-database-manager/blob/master/LICENSE) file for details.
 ## Version
-- Release 0.1 - Stable Build
+- Release 0.3 - Stable Build
 ## Contributing
 For those wanting to contribute, please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details.
 ## Acknowledgments
