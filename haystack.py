@@ -33,7 +33,7 @@ def check_url(url):
     global unknown_urls_count
 
     try:  # get status code
-        request = requests.get(url, timeout=3)
+        request = requests.head(url, timeout=3)
         status = request.status_code
 
     except KeyboardInterrupt:  # must include to be able to stop the program while it is running
