@@ -54,8 +54,8 @@ This project is licensed under the MIT License - see the [LICENSE.md](https://gi
 ## Version
 - Release 0.3 - Stable Build
 ## Contributing
+For those wanting to contribute, please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details.
 - [NesaByte](https://github.com/NesaByte) - Added support for argparse
 - [sonechca](https://github.com/sonechca) - Added support for parallelization, using multiple threads pool
-For those wanting to contribute, please read [CONTRIBUTING.md](https://gist.github.com/PurpleBooth/b24679402957c63ec426) for details.
 ## Acknowledgments
 I would like to thank my colleagues for reviewing my code and issuing suggestions for improvements:
