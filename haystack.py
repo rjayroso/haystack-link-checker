@@ -4,7 +4,9 @@
 # Licence: MIT Licence
 # Description: Haystack checks through a file for broken links
 
+
 # TODO: add vertical white space, finish flag parsing functionality
+
 
 import argparse                         # parsing command line arguments 
 import sys                              # command line arguments
@@ -13,12 +15,16 @@ import codecs                           # file handling
 import re                               # regex for urls
 from termcolor import colored           # colored terminal text
 from multiprocessing.dummy import Pool  # support for parallelization
+from multiprocessing import cpu_count   # get cpu thread count
 
 
 # count variables to record the amount of valid/bad/unknown links
 valid_urls_count = 0
 bad_urls_count = 0
 unknown_urls_count = 0
+
+# -f FILE, --file FILE additional flag, default is '--all'
+flag = '--all'
 
 
 def find_urls(filename):
@@ -38,35 +44,35 @@ def check_url(url):
     except KeyboardInterrupt:  # must include to be able to stop the program while it is running
         sys.exit()
     except:
-        print(colored("Unknown link: {}".format(url), 'yellow'))
-        unknown_urls_count += 1
-    else:
-        if status in range(200,299):
-            print(colored("Valid link ({}): {}".format(status, url), 'green'))
-            valid_urls_count += 1
-        elif status in range(400,599):
-            print(colored("Bad link ({}): {}".format(status, url), 'red'))
-            bad_urls_count += 1
-        elif status in range(300,399):
-            print(colored("Redirected link ({}): {}".format(status, url), 'green'))
-        else:
+        if flag == "--all":
             print(colored("Unknown link: {}".format(url), 'yellow'))
+            unknown_urls_count += 1
+    else:
+        if status in range(200, 299) and (flag == "--good" or flag == "--all"):
+            print(colored("Valid link ({}): {} ".format(status, url), 'green'))
+            valid_urls_count += 1
+        elif status in range(400, 599) and (flag == "--bad" or flag == "--all"):
+            print(colored("Bad link ({}): {} ".format(status, url), 'red'))
+            bad_urls_count += 1
+        elif flag == "--all":
+            print(colored("Unknown link: {} ".format(url), 'yellow'))
             unknown_urls_count += 1
 
 
-def main(file, flag):
+def main(file):
     try:  # read from file
         file = codecs.open(file, 'r', 'utf-8')
     except OSError as err:  # error opening file
         print("Error opening file: {0}".format(err))
     else:  # success opening file
+        print("Haystack is processing the file")
         urls = find_urls(file.read())
-        pool = Pool(10)              # Using 5 Thread pool
+        pool = Pool(cpu_count())     # Using 5 Thread pool
         pool.map(check_url, urls)    # Returns an iterator that applies function to every item of iterable
         pool.close()
         pool.join()
         # Using '+' operator to connect with each sentence to print
-        print("Haystack has finished processing the file.\n" +
+        print("Haystack has finished processing the file\n" +
               colored("# of VALID links: {} | ".format(valid_urls_count), 'green') +
               colored("# of UNKNOWN links: {} | ".format(unknown_urls_count), 'yellow') +
               colored("# of BAD links: {}".format(bad_urls_count), 'red'))
@@ -86,7 +92,8 @@ if __name__ == '__main__':
     flag_group.add_argument('--bad', help='displays bad links', action='store_const', const='--bad', dest='flag')
     args = parser.parse_args()
     if args.file:
-        main(args.file, args.flag)
+        flag = args.flag
+        main(args.file)
     else:
         parser.print_help(sys.stderr)
         sys.exit(1)
