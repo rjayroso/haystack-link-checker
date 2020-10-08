@@ -47,8 +47,6 @@ python haystack.py -v
 # To run haystack on your own HTML file
 python haystack.py <filename>
 ```
-## Author
-- [Royce Ayroso-Ong](https://github.com/rjayroso) - Initial work
 ## License
 This project is licensed under the MIT License - see the [LICENSE.md](https://github.com/rjayroso/react-vehicle-database-manager/blob/master/LICENSE) file for details.
 ## Version
