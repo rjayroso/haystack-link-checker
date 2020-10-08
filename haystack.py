@@ -81,10 +81,8 @@ def main(file):
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(
-        description="These are common Haystack commands used in various situations:",
-        formatter_class=argparse.ArgumentDefaultsHelpFormatter
-    )
+    parser = argparse.ArgumentParser(description="These are common Haystack commands used in various situations:",
+                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('-v', '--version', help="display installed version", action="store_true")
     parser.add_argument('-f', '--file',  help="search through a file for broken links", dest="file")
     args = parser.parse_args()
@@ -98,4 +96,3 @@ if __name__ == '__main__':
     else:
         parser.print_help(sys.stderr)
         sys.exit(1)
-        
