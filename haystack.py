@@ -60,10 +60,6 @@ def check_url(url):
             unknown_urls_count += 1
 
 
-def version():
-    print("Haystack Version 0.3")
-
-
 def main(file):
     try:  # read from file
         file = codecs.open(file, 'r', 'utf-8')
@@ -72,25 +68,29 @@ def main(file):
     else:  # success opening file
         urls = find_urls(file.read())
         pool = Pool(10)              # Using 5 Thread pool
-        pool.map(check_url, urls)    # Return an iterator that applies function to every item of iterable, yielding the results
+        pool.map(check_url, urls)    # Returns an iterator that applies function to every item of iterable
         pool.close()
         pool.join()
 
         # Using '+' operator to connect with each sentence to print
-        print("Haystack has finished processing the file.\n" + colored("# of VALID links: {} | ".format(valid_urls_count), 'green') + colored("# of UNKNOWN links: {} | ".format(unknown_urls_count), 'yellow') + colored("# of BAD links: {}".format(bad_urls_count), 'red'))
+        print("Haystack has finished processing the file.\n" +
+              colored("# of VALID links: {} | ".format(valid_urls_count), 'green') +
+              colored("# of UNKNOWN links: {} | ".format(unknown_urls_count), 'yellow') +
+              colored("# of BAD links: {}".format(bad_urls_count), 'red'))
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(description="These are common Haystack commands used in various situations:",
-                                     formatter_class=argparse.ArgumentDefaultsHelpFormatter)
-    parser.add_argument('-v', '--version', help="display installed version", action="store_true")
-    parser.add_argument('-f', '--file',  help="search through a file for broken links", dest="file")
+    parser = argparse.ArgumentParser(description='These are common Haystack commands used in various situations:')
+    parser.add_argument('-v', '--version',
+                        action="version",
+                        help="display installed version",
+                        version='%(prog)s version 3.0')
+    parser.add_argument('-f', '--file',
+                        help="search through a file for broken links",
+                        dest="file")
     args = parser.parse_args()
 
-    if args.version:
-        version()
-
-    elif args.file:
+    if args.file:
         main(args.file)
 
     else:
