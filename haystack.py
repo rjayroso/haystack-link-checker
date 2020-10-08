@@ -44,13 +44,16 @@ def check_url(url):
         unknown_urls_count += 1
 
     else:
-        if status == 200:
+        if status in range(200,299):
             print(colored("Valid link ({}): {}".format(status, url), 'green'))
             valid_urls_count += 1
 
-        elif status == 400 or status == 404:
+        elif status in range(400,599):
             print(colored("Bad link ({}): {}".format(status, url), 'red'))
             bad_urls_count += 1
+
+        elif status in range(300,399):
+            print(colored("Redirected link ({}): {}".format(status, url), 'green'))
 
         else:
             print(colored("Unknown link: {}".format(url), 'yellow'))
