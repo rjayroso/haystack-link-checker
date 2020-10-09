@@ -92,7 +92,10 @@ if __name__ == '__main__':
 
     elif args.file:
         main(args.file)
-
+        if bad_urls_count > 0 or unknown_urls_count > 0:
+            sys.exit(1)
+        else:
+            sys.exit(0)
     else:
         parser.print_help(sys.stderr)
         sys.exit(1)
