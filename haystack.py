@@ -7,7 +7,6 @@
 import argparse  # parsing command line arguments
 import sys  # command line arguments
 import requests  # url validating
-import codecs  # file handling
 import re  # regex for urls
 from termcolor import colored  # colored terminal text
 from multiprocessing.dummy import Pool  # support for parallelization
@@ -30,6 +29,7 @@ def find_urls(filename):
 
 
 def ignore_urls(searchurls, ignoreurls):
+    # finds the common elements between the two lists and gets rid of them
     finalurls = list(set(searchurls) ^ set(ignoreurls))
     return finalurls
 
@@ -102,7 +102,7 @@ if __name__ == '__main__':
                         version='%(prog)s version 3.0')
     parser.add_argument('-f', '--file', help='search through a file for broken links', dest='searchfile')
 
-    parser.add_argument('--ignore', help='file that contains urls to ignore', dest='ignorefile')
+    parser.add_argument('-i', '--ignore', help='file that contains urls to ignore', dest='ignorefile')
 
     # optional flags for file processing, default is --all, only one flag can be present at a time
     flag_group = parser.add_mutually_exclusive_group()
