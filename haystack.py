@@ -4,14 +4,14 @@
 # Licence: MIT Licence
 # Description: Haystack checks through a file for broken links
 
-import argparse                         # parsing command line arguments 
-import sys                              # command line arguments
-import requests                         # url validating
-import codecs                           # file handling
-import re                               # regex for urls
-from termcolor import colored           # colored terminal text
+import argparse  # parsing command line arguments
+import sys  # command line arguments
+import requests  # url validating
+import codecs  # file handling
+import re  # regex for urls
+from termcolor import colored  # colored terminal text
 from multiprocessing.dummy import Pool  # support for parallelization
-from multiprocessing import cpu_count   # get cpu thread count
+from multiprocessing import cpu_count  # get cpu thread count
 
 # count variables to record the amount of valid/bad/unknown links
 valid_urls_count = 0
@@ -27,6 +27,11 @@ def find_urls(filename):
     urls = re.findall(regex, filename)  # uses regex to search for http(s) links in the file
     urls = list(dict.fromkeys(urls))  # removes duplicate links
     return urls
+
+
+def ignore_urls(searchurls, ignoreurls):
+    finalurls = list(set(searchurls) ^ set(ignoreurls))
+    return finalurls
 
 
 def check_url(url):
@@ -62,20 +67,26 @@ def check_url(url):
 
 def main(searchfile, ignorefile):
     try:  # read from file
-        searchfile = codecs.open(searchfile, 'r', 'utf-8')
+
+        with open(searchfile, 'r') as search:
+            searchurls = find_urls(search.read())
 
         if ignorefile:
-            ignorefile = codecs.open(ignorefile, 'r', 'utf-8')
+            with open(ignorefile, 'r') as ignore:
+                ignoreurls = find_urls(ignore.read())
+                searchurls = ignore_urls(searchurls, ignoreurls)
+
+
+
 
     except OSError as err:  # error opening file
         print("Error opening file: {0}".format(err))
 
     else:  # success opening file
         print("Haystack is processing the file")
-        searchurls = find_urls(searchfile.read())
-        ignoreurls=find_urls(ignorefile.read())
-        pool = Pool(cpu_count())     # Using 5 Thread pool
-        pool.map(check_url, searchurls)    # Returns an iterator that applies function to every item of iterable
+
+        pool = Pool(cpu_count())  # Using 5 Thread pool
+        pool.map(check_url, searchurls)  # Returns an iterator that applies function to every item of iterable
         pool.close()
         pool.join()
 
@@ -91,7 +102,7 @@ if __name__ == '__main__':
                                      description='These are common Haystack commands used in various situations:')
     parser.add_argument('-v', '--version', action='version', help='display installed version',
                         version='%(prog)s version 3.0')
-    parser.add_argument('-f', '--file', help='search through a file for broken links',  dest='searchfile')
+    parser.add_argument('-f', '--file', help='search through a file for broken links', dest='searchfile')
 
     parser.add_argument('--ignore', help='file that contains urls to ignore', dest='ignorefile')
 
@@ -106,7 +117,7 @@ if __name__ == '__main__':
 
     if args.searchfile:
         flag = args.flag
-        main(args.searchfile,args.ignorefile)
+        main(args.searchfile, args.ignorefile)
         if bad_urls_count > 0 or unknown_urls_count > 0:
             sys.exit(1)
         else:
