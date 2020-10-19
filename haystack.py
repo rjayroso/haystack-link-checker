@@ -71,13 +71,11 @@ def main(searchfile, ignorefile):
         with open(searchfile, 'r') as search:
             searchurls = find_urls(search.read())
 
+        # if user is using the ignore options
         if ignorefile:
             with open(ignorefile, 'r') as ignore:
                 ignoreurls = find_urls(ignore.read())
                 searchurls = ignore_urls(searchurls, ignoreurls)
-
-
-
 
     except OSError as err:  # error opening file
         print("Error opening file: {0}".format(err))
