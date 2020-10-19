@@ -60,18 +60,22 @@ def check_url(url):
             unknown_urls_count += 1
 
 
-def main(file):
+def main(searchfile, ignorefile):
     try:  # read from file
-        file = codecs.open(file, 'r', 'utf-8')
+        searchfile = codecs.open(searchfile, 'r', 'utf-8')
+
+        if ignorefile:
+            ignorefile = codecs.open(ignorefile, 'r', 'utf-8')
 
     except OSError as err:  # error opening file
         print("Error opening file: {0}".format(err))
 
     else:  # success opening file
         print("Haystack is processing the file")
-        urls = find_urls(file.read())
+        searchurls = find_urls(searchfile.read())
+        ignoreurls=find_urls(ignorefile.read())
         pool = Pool(cpu_count())     # Using 5 Thread pool
-        pool.map(check_url, urls)    # Returns an iterator that applies function to every item of iterable
+        pool.map(check_url, searchurls)    # Returns an iterator that applies function to every item of iterable
         pool.close()
         pool.join()
 
@@ -87,7 +91,9 @@ if __name__ == '__main__':
                                      description='These are common Haystack commands used in various situations:')
     parser.add_argument('-v', '--version', action='version', help='display installed version',
                         version='%(prog)s version 3.0')
-    parser.add_argument('-f', '--file', help='search through a file for broken links',  dest='file')
+    parser.add_argument('-f', '--file', help='search through a file for broken links',  dest='searchfile')
+
+    parser.add_argument('--ignore', help='file that contains urls to ignore', dest='ignorefile')
 
     # optional flags for file processing, default is --all, only one flag can be present at a time
     flag_group = parser.add_mutually_exclusive_group()
@@ -98,9 +104,9 @@ if __name__ == '__main__':
 
     args = parser.parse_args()
 
-    if args.file:
+    if args.searchfile:
         flag = args.flag
-        main(args.file)
+        main(args.searchfile,args.ignorefile)
         if bad_urls_count > 0 or unknown_urls_count > 0:
             sys.exit(1)
         else:
