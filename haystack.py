@@ -12,14 +12,6 @@ from termcolor import colored  # colored terminal text
 from multiprocessing.dummy import Pool  # support for parallelization
 from multiprocessing import cpu_count  # get cpu thread count
 
-# count variables to record the amount of valid/bad/unknown links
-valid_urls_count = 0
-bad_urls_count = 0
-unknown_urls_count = 0
-
-# -f FILE, --file FILE additional flag, default is '--all'
-flag = '--all'
-
 
 def find_urls(filename):
     regex = "(?:(?:https?|ftp)://)[-A-Za-z0-9+&@#/%?=~_()|!:,.;]*[-A-Za-z0-9+&@#/%=~_()|]"
@@ -35,10 +27,6 @@ def ignore_urls(searchurls, ignoreurls):
 
 
 def check_url(url):
-    global valid_urls_count
-    global bad_urls_count
-    global unknown_urls_count
-
     try:  # get status code
         request = requests.head(url, timeout=3)
         status = request.status_code
@@ -48,21 +36,42 @@ def check_url(url):
 
     except:
         if flag == "--all":
-            print(colored("Unknown link: {}".format(url), 'yellow'))
-            unknown_urls_count += 1
+            print_colored("Unknown link: {}".format(url), 'yellow')
 
     else:
         if status in range(200, 299) and (flag == "--good" or flag == "--all"):
-            print(colored("Valid link ({}): {} ".format(status, url), 'green'))
-            valid_urls_count += 1
+            print_colored("Valid link ({}): {} ".format(status, url), 'green')
 
         elif status in range(400, 599) and (flag == "--bad" or flag == "--all"):
-            print(colored("Bad link ({}): {} ".format(status, url), 'red'))
-            bad_urls_count += 1
+            print_colored("Bad link ({}): {} ".format(status, url), 'red')
 
         elif flag == "--all":
-            print(colored("Unknown link: {} ".format(url), 'yellow'))
-            unknown_urls_count += 1
+            print_colored("Unknown link: {} ".format(url), 'yellow')
+
+
+def print_colored(string, color):
+    # using term color to print string in specified color
+    print(colored(string, color))
+
+
+def initialize_parser():
+    # initialize argparse arguments and return the main parser
+    parser = argparse.ArgumentParser(prog="Haystack",
+                                     description='These are common Haystack commands used in various situations:')
+    parser.add_argument('-v', '--version', action='version', help='display installed version',
+                        version='%(prog)s version 3.0')
+    parser.add_argument('-f', '--file', help='search through a file for broken links', dest='searchfile')
+
+    parser.add_argument('-i', '--ignore', help='file that contains urls to ignore', dest='ignorefile')
+
+    # optional flags for file processing, default is --all, only one flag can be present at a time
+    flag_group = parser.add_mutually_exclusive_group()
+    flag_group.add_argument('--all', help='displays all links', action='store_const', const='--all', default='--all',
+                            dest='flag')
+    flag_group.add_argument('--good', help='displays good links', action='store_const', const='--good', dest='flag')
+    flag_group.add_argument('--bad', help='displays bad links', action='store_const', const='--bad', dest='flag')
+
+    return parser
 
 
 def main(searchfile, ignorefile):
@@ -89,37 +98,17 @@ def main(searchfile, ignorefile):
         pool.join()
 
         # Using '+' operator to connect with each sentence to print
-        print("Haystack has finished processing the file\n" +
-              colored("# of VALID links: {} | ".format(valid_urls_count), 'green') +
-              colored("# of UNKNOWN links: {} | ".format(unknown_urls_count), 'yellow') +
-              colored("# of BAD links: {}".format(bad_urls_count), 'red'))
+        print("Haystack has finished processing the file")
 
 
 if __name__ == '__main__':
-    parser = argparse.ArgumentParser(prog="Haystack",
-                                     description='These are common Haystack commands used in various situations:')
-    parser.add_argument('-v', '--version', action='version', help='display installed version',
-                        version='%(prog)s version 3.0')
-    parser.add_argument('-f', '--file', help='search through a file for broken links', dest='searchfile')
-
-    parser.add_argument('-i', '--ignore', help='file that contains urls to ignore', dest='ignorefile')
-
-    # optional flags for file processing, default is --all, only one flag can be present at a time
-    flag_group = parser.add_mutually_exclusive_group()
-    flag_group.add_argument('--all', help='displays all links', action='store_const', const='--all', default='--all',
-                            dest='flag')
-    flag_group.add_argument('--good', help='displays good links', action='store_const', const='--good', dest='flag')
-    flag_group.add_argument('--bad', help='displays bad links', action='store_const', const='--bad', dest='flag')
-
+    parser = initialize_parser()
     args = parser.parse_args()
 
     if args.searchfile:
         flag = args.flag
         main(args.searchfile, args.ignorefile)
-        if bad_urls_count > 0 or unknown_urls_count > 0:
-            sys.exit(1)
-        else:
-            sys.exit(0)
     else:
         parser.print_help(sys.stderr)
-        sys.exit(0)
+
+    sys.exit(0)
