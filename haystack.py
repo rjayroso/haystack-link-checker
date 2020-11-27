@@ -1,7 +1,6 @@
 """
-- HAYSTACK -
+HAYSTACK
 Author: Royce Ayroso-Ong
-Version: 0.3
 Licence: MIT Licence
 Description: Haystack checks through a file for broken links
 """
@@ -13,6 +12,9 @@ import sys  # command line arguments
 import re  # regex for urls
 import requests  # url validating
 from termcolor import colored  # colored terminal text
+
+
+flag = '--all'  # to be used for flag options
 
 
 def find_urls(filename):
@@ -76,6 +78,8 @@ def check_url(url):
 
         elif flag == "--all":
             print_colored("Unknown link: {} ".format(url), "yellow")
+
+        return status
 
 
 def print_colored(message, color):
