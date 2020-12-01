@@ -28,6 +28,7 @@ pip install termcolor
 pip install requests
 pip install black
 pip install pylint
+pip install coverage
 ```
 ### Committing Changes
 Before committing any changes, be sure to format the main `haystack.py` file via Python [Black](https://pypi.org/project/black/) and run [PyLint](https://pylint.pycqa.org/en/latest/user_guide/run.html) like so:
@@ -37,14 +38,18 @@ pylint haystack.py
 ```
 Be sure to fix any warnings before committing!
 To see how Black formats the code, see the [styling documentation](https://github.com/psf/black/blob/master/docs/the_black_code_style.md).
+### Unit Testing
+Haystack uses the [unittest](https://docs.python.org/3/library/unittest.html) unit testing framework.  
+To run the tests, run `python test.py` (unit tests should be run before committing any changes).  
+To run code coverage, run `coverage run -m unittest discover` and then run `coverage report` to report on the results.
 ### Setting up Your Visual Studio Code
 To automatically use Black with your VS Code, follow the instructions below:
 1. Go to the settins by pressing `Ctrl+` or by pressing the gear icon in the bottom right of your VS Code.
 2. Type **"format on save"** at the top search bar and check the box.
 3. Search for "**python formatting provider**" and select "black" in the drop down menu (NOTE: you must have Black installed already).
-
 To automatically use PyLint with your VS Code, follow the second set of instructions below:
 1. Open VS Code's command pallete by pressing `Ctrl+Shift+P`.
 2. Type "**Python: Select Linter**" and choose PyLint (NOTE: you must have PyLint installed already).
+
 
 
