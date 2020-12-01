@@ -51,6 +51,14 @@ class HaystackTests(unittest.TestCase):
             if status_code:
                 self.assertEqual(404, status_code)
 
+    def test_main_with_valid_files(self):
+        exit_code = main("test_files/test_urls.txt", "test_files/test_urls_invalid.txt")
+        self.assertEqual(0, exit_code)
+
+    def test_main_with_invalid_files(self):
+        exit_code = main("asdf/tfffs.txt", "asggdff/fdsa.txt")
+        self.assertEqual(1, exit_code)
+
 
 if __name__ == '__main__':
     unittest.main()

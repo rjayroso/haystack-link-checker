@@ -167,6 +167,7 @@ def main(searchfile, ignorefile):
 
     except OSError as err:  # error opening file
         print("Error opening file: {0}".format(err))
+        return 1
 
     else:  # success opening file
         print("Haystack is processing the file")
@@ -180,6 +181,7 @@ def main(searchfile, ignorefile):
 
         # Using '+' operator to connect with each sentence to print
         print("Haystack has finished processing the file")
+        return 0
 
 
 if __name__ == "__main__":
