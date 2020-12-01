@@ -3,6 +3,10 @@ from haystack import *
 
 # To run the unit test_files, issue the following command: `python test.py`
 # For information on python unit testing, see: https://docs.python.org/3/library/unittest.html
+# To check for code coverage:
+#   `pip install coverage`
+#   `coverage run -m unittest discover`
+#   `coverage report`
 
 
 class HaystackTests(unittest.TestCase):
