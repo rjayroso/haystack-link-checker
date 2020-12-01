@@ -43,7 +43,6 @@ class HaystackTests(unittest.TestCase):
 
         self.assertEqual(urls, correct_output)
 
-    # you need to mock the responses
     def test_check_url_valid(self):
 
         urls_file = open("test_files/test_urls.txt", "r")
@@ -53,15 +52,23 @@ class HaystackTests(unittest.TestCase):
             status_code = self.mock_website_response(url=url, expected_code=200)
             self.assertEqual(200, status_code)
 
-    # you need to mock the responses
     def test_check_url_invalid(self):
         urls_file = open("test_files/test_urls_invalid.txt", "r")
         search = find_urls(urls_file.read())
 
         for url in search:
-            status_code = check_url(url)
+            status_code = self.mock_website_response(url=url, expected_code=404)
             if status_code:
                 self.assertEqual(404, status_code)
+
+    def test_check_url_unknown(self):
+        urls_file = open("test_files/test_urls_invalid.txt", "r")
+        search = find_urls(urls_file.read())
+
+        for url in search:
+            status_code = self.mock_website_response(url=url, expected_code=707)
+            if status_code:
+                self.assertEqual(707, status_code)
 
     def test_main_with_valid_files(self):
         exit_code = main("test_files/test_urls.txt", "test_files/test_urls_invalid.txt")
@@ -72,7 +79,7 @@ class HaystackTests(unittest.TestCase):
         self.assertEqual(1, exit_code)
 
     @unittest.mock.patch("haystack.requests")
-    def mock_website_response(self, mock_request=None, url="", expected_code=200):
+    def mock_website_response(self, mock_request=None, url="", expected_code=None):
         mock_request.head(url).status_code = expected_code
         status = check_url(url)
 
