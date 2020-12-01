@@ -1,0 +1,2 @@
+https://github.com/Seneca-CDOT/topics-in-open-source-2020/wiki/lab-8
+https://docs.python.org/3/library/unittest.html
