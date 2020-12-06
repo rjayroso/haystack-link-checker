@@ -54,6 +54,16 @@ def print_colored(string, color):
     print(colored(string, color))
 
 
+def parse_json(url, data):
+    # parse an array of json objects
+    searchurls = []
+    for item in data:
+        linktocheck = url + '/' + item["id"]
+        searchurls.append(linktocheck)
+
+    return searchurls
+
+
 def initialize_parser():
     # initialize argparse arguments and return the main parser
     parser = argparse.ArgumentParser(prog="Haystack",
@@ -61,7 +71,7 @@ def initialize_parser():
     parser.add_argument('-v', '--version', action='version', help='display installed version',
                         version='%(prog)s version 3.0')
     parser.add_argument('-f', '--file', help='search through a file for broken links', dest='searchfile')
-
+    parser.add_argument('-u', '--url', help='search through a web link for broken links', dest='url')
     parser.add_argument('-i', '--ignore', help='file that contains urls to ignore', dest='ignorefile')
 
     # optional flags for file processing, default is --all, only one flag can be present at a time
@@ -74,17 +84,25 @@ def initialize_parser():
     return parser
 
 
-def main(searchfile, ignorefile):
+def main(searchfile, ignorefile, url):
     try:  # read from file
+        if url:
+            # todo
+            print("DEBUG: == STARTING ==")
+            r = requests.get(url, timeout=3)
+            data = r.json()
+            print(data)
+            searchurls = parse_json(url, data)
 
-        with open(searchfile, 'r') as search:
-            searchurls = find_urls(search.read())
+        elif searchfile:
+            with open(searchfile, 'r') as search:
+                searchurls = find_urls(search.read())
 
-        # if user is using the ignore options
-        if ignorefile:
-            with open(ignorefile, 'r') as ignore:
-                ignoreurls = find_urls(ignore.read())
-                searchurls = ignore_urls(searchurls, ignoreurls)
+            # if user is using the ignore options
+            if ignorefile:
+                with open(ignorefile, 'r') as ignore:
+                    ignoreurls = find_urls(ignore.read())
+                    searchurls = ignore_urls(searchurls, ignoreurls)
 
     except OSError as err:  # error opening file
         print("Error opening file: {0}".format(err))
@@ -105,9 +123,9 @@ if __name__ == '__main__':
     parser = initialize_parser()
     args = parser.parse_args()
 
-    if args.searchfile:
+    if args.searchfile or args.url:
         flag = args.flag
-        main(args.searchfile, args.ignorefile)
+        main(args.searchfile, args.ignorefile, args.url)
     else:
         parser.print_help(sys.stderr)
 
