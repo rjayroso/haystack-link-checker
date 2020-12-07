@@ -1,7 +1,7 @@
 """Contains the tests for haystack"""
 import unittest
+import haystack
 from unittest import mock  # pylint: disable=unused-import
-from haystack import *
 
 
 # To run the unit test_files, issue the following command: `python test.py`
@@ -14,8 +14,8 @@ from haystack import *
 
 class HaystackTests(unittest.TestCase):
     def test_find_urls(self):
-        urls_file = open("test_files/test_urls.txt", "r")
-        urls = find_urls(urls_file.read())
+        urls_file = open("test_urls.txt", "r")
+        urls = haystack.find_urls(urls_file.read())
 
         correct_output = [
             "https://www.google.ca/",
@@ -28,13 +28,13 @@ class HaystackTests(unittest.TestCase):
         self.assertEqual(urls, correct_output)
 
     def test_ignore_urls(self):
-        urls_file = open("test_files/test_urls.txt", "r")
-        urls_to_ignore_file = open("test_files/test_urls_to_ignore.txt", "r")
+        urls_file = open("test_urls.txt", "r")
+        urls_to_ignore_file = open("test_urls_to_ignore.txt", "r")
 
-        search = find_urls(urls_file.read())
-        ignore = find_urls(urls_to_ignore_file.read())
+        search = haystack.find_urls(urls_file.read())
+        ignore = haystack.find_urls(urls_to_ignore_file.read())
 
-        urls = ignore_urls(search, ignore)
+        urls = haystack.ignore_urls(search, ignore)
 
         urls_file.close()
         urls_to_ignore_file.close()
@@ -45,16 +45,16 @@ class HaystackTests(unittest.TestCase):
 
     def test_check_url_valid(self):
 
-        urls_file = open("test_files/test_urls.txt", "r")
-        search = find_urls(urls_file.read())
+        urls_file = open("test_urls.txt", "r")
+        search = haystack.find_urls(urls_file.read())
 
         for url in search:
             status_code = self.mock_website_response(url=url, expected_code=200)
             self.assertEqual(200, status_code)
 
     def test_check_url_invalid(self):
-        urls_file = open("test_files/test_urls_invalid.txt", "r")
-        search = find_urls(urls_file.read())
+        urls_file = open("test_urls_invalid.txt", "r")
+        search = haystack.find_urls(urls_file.read())
 
         for url in search:
             status_code = self.mock_website_response(url=url, expected_code=404)
@@ -62,8 +62,8 @@ class HaystackTests(unittest.TestCase):
                 self.assertEqual(404, status_code)
 
     def test_check_url_unknown(self):
-        urls_file = open("test_files/test_urls_invalid.txt", "r")
-        search = find_urls(urls_file.read())
+        urls_file = open("test_urls_invalid.txt", "r")
+        search = haystack.find_urls(urls_file.read())
 
         for url in search:
             status_code = self.mock_website_response(url=url, expected_code=707)
@@ -71,17 +71,17 @@ class HaystackTests(unittest.TestCase):
                 self.assertEqual(707, status_code)
 
     def test_main_with_valid_files(self):
-        exit_code = main("test_files/test_urls.txt", "test_files/test_urls_invalid.txt")
+        exit_code = haystack.main("test_files/test_urls.txt", "test_files/test_urls_invalid.txt")
         self.assertEqual(0, exit_code)
 
     def test_main_with_invalid_files(self):
-        exit_code = main("asdf/tfffs.txt", "asggdff/fdsa.txt")
+        exit_code = haystack.main("asdf/tfffs.txt", "asggdff/fdsa.txt")
         self.assertEqual(1, exit_code)
 
     @unittest.mock.patch("haystack.requests")
     def mock_website_response(self, mock_request=None, url="", expected_code=None):
         mock_request.head(url).status_code = expected_code
-        status = check_url(url)
+        status = haystack.check_url(url)
 
         return status
 
