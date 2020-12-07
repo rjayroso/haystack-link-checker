@@ -7,7 +7,12 @@ Do you have valid and broken links that need to be fixed? Haystack will find tho
 - Exception handling for unkown links
 - Support for UNIX and Windows style commands
 - Support for parallelization, using multiple threads pool
-### Running Haystack
+## Installing Haystack Using PyPI
+```bash
+# To install Haystack with pip, type:
+python -m pip install --index-url https://test.pypi.org/simple/ --no-deps haystack-rjayroso
+```
+## Running Haystack
 ```bash
 # Once you have successfully installed Python and the dependencies: 
 # Type haystack.py to see help section
