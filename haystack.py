@@ -124,7 +124,7 @@ def initialize_parser():
     init_parser.add_argument(
         "-f", "--file", help="search through a file for broken links", dest="searchfile"
     )
-    parser.add_argument(
+    init_parser.add_argument(
         '-u', '--url', help='search through a web link for broken links', dest='url'
     )
     init_parser.add_argument(
